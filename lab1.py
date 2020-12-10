@@ -16,10 +16,10 @@ def find_c(msg, g, r):
     return remainder
 
 
-def gen_e(p, k, r):
+def gen_e(p, l, r):
     a = []
-    l = k + r
-    while len(a) < l:
+    lenght = l + r
+    while len(a) < lenght:
         x = random.uniform(0, 1.0)
         if x <= p:
             temp_x = 1
@@ -69,7 +69,7 @@ def main():
     #code_words()
     g = input("Enter your g(x): ")
     g = int(g, 2)  # g(x)
-    k = int(input("Enter you k: "))
+    l = int(input("Enter you l: "))
     r = len(bin(g)) - 3  # степень многочлена
     eps = input("Enter the accuracy(eps) with which you would like to get the result: ")  # точность
     eps = float(eps)
@@ -77,30 +77,79 @@ def main():
     N = 9 // (4 * (eps ** 2))  # количество раз повторения процедуры
     i = 0
     p_array = np.arange(0, 1.01, 0.01)
-    Pe_array = []
+    Pe_array_1 = []
+    Pe_array_2 = []
+    Pe_array_3 = []
     for p in p_array:
         i = 0
         Ne = 0
         while i < N:
-            msg = random.getrandbits(k)  # наше сообщение
+            msg = random.getrandbits(l)  # наше сообщение
             c = find_c(msg, g, r)
             a = (msg << r) + c
-            e = gen_e(p, k, r)
+            e = gen_e(p, l, r)
             b = a ^ e
             s = calc_syndrome(b, g)
             if s == 0 and e != 0:
                 Ne += 1
             i += 1
         Pe = Ne / N
-        Pe_array.append(Pe)
-    #print(Pe_array)
+        Pe_array_1.append(Pe)
+
+
+    l = 2
+    for p in p_array:
+        i = 0
+        Ne = 0
+        while i < N:
+            msg = random.getrandbits(l)  # наше сообщение
+            c = find_c(msg, g, r)
+            a = (msg << r) + c
+            e = gen_e(p, l, r)
+            b = a ^ e
+            s = calc_syndrome(b, g)
+            if s == 0 and e != 0:
+                Ne += 1
+            i += 1
+        Pe = Ne / N
+        Pe_array_2.append(Pe)
+
+
+
+    l = 4
+    for p in p_array:
+        i = 0
+        Ne = 0
+        while i < N:
+            msg = random.getrandbits(l)  # наше сообщение
+            c = find_c(msg, g, r)
+            a = (msg << r) + c
+            e = gen_e(p, l, r)
+            b = a ^ e
+            s = calc_syndrome(b, g)
+            if s == 0 and e != 0:
+                Ne += 1
+            i += 1
+        Pe = Ne / N
+        Pe_array_3.append(Pe)
 
 # Построение графика
-    plt.title("График зависимости Pe от P")  # заголовок
-    plt.xlabel("P")  # ось абсцисс
-    plt.ylabel("Pe")  # ось ординат
-    plt.grid()  # включение отображение сетки
-    plt.plot(p_array, Pe_array)  # построение графика
+#    plt.title("График зависимости Pe от P")  # заголовок
+#    plt.xlabel("P")  # ось абсцисс
+#    plt.ylabel("Pe")  # ось ординат
+#    plt.grid()  # включение отображение сетки
+#    plt.plot(p_array, Pe_array_1, '-')  # построение графика
+#    plt.plot(p_array, Pe_array_2, '--')  # построение графика
+#    plt.plot(p_array, Pe_array_3, ':')  # построение графика
+#    plt.show()
+
+    # Вывод графиков
+    _, ax = plt.subplots()
+    ax.plot(p_array, Pe_array_1, '-')
+    ax.plot(p_array, Pe_array_2, '--')
+    ax.plot(p_array, Pe_array_3, ':')
     plt.show()
+
+
 if __name__ == '__main__':
     main()
