@@ -2,7 +2,6 @@ import random
 from matplotlib import pyplot as plt
 import numpy as np
 
-# import numpy as np
 
 def find_c(msg, g, r):
     m = msg << r
@@ -132,16 +131,6 @@ def main():
             i += 1
         Pe = Ne / N
         Pe_array_3.append(Pe)
-
-# Построение графика
-#    plt.title("График зависимости Pe от P")  # заголовок
-#    plt.xlabel("P")  # ось абсцисс
-#    plt.ylabel("Pe")  # ось ординат
-#    plt.grid()  # включение отображение сетки
-#    plt.plot(p_array, Pe_array_1, '-')  # построение графика
-#    plt.plot(p_array, Pe_array_2, '--')  # построение графика
-#    plt.plot(p_array, Pe_array_3, ':')  # построение графика
-#    plt.show()
 
     # Вывод графиков
     _, ax = plt.subplots()
